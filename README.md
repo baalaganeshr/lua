@@ -73,7 +73,107 @@ debugPrint('wow cool string to print', true, someOtherVar)
 
 ```
 useNuiEvent
-
 A custom React hook for intercepting and handling messages dispatched by game scripts.
-
 ```
+
+Usage
+
+jsx
+
+const MyComp: React.FC = () => {
+const [state, setState] = useState('');
+
+useNuiEvent<string>('myAction', (data) => {
+setState(data);
+});
+
+return (
+<div>
+<h1>Some component</h1>
+<p>{state}</p>
+</div>
+);
+}
+
+fetchNui
+
+A wrapper around the standard fetch API for NUI data fetching or triggering NUI callbacks in game scripts.
+
+Usage
+
+ts
+
+fetchNui<ReturnData>('getClientData').then(retData => {
+console.log('Got return data from client scripts:');
+console.dir(retData);
+setClientData(retData);
+}).catch(e => {
+console.error('Setting mock data due to error', e);
+setClientData({ x: 500, y: 300, z: 200 });
+});
+
+debugData
+
+Allows for mocking dispatched game script actions in a browser environment.
+
+Usage
+
+ts
+
+debugData([
+{
+action: 'setVisible',
+data: true,
+}
+]);
+
+Misc Utils
+
+    isEnvBrowser() - Returns a boolean indicating if the current environment is a regular browser.
+
+Development Workflow
+Hot Builds In-Game
+
+For in-game development, use the hot build system by running the start:game script. This writes to disk, so only a resource restart is needed to update the game script.
+
+Usage
+
+sh
+
+# yarn
+
+yarn start:game
+
+# npm
+
+npm run start:game
+
+Production Builds
+
+To create an optimized and minimized production build, run:
+
+sh
+
+npm run build
+yarn build
+
+vRP Integration
+
+This boilerplate can be used with the vRP framework. Ensure you have both a default CFX server and the vRP framework installed.
+
+    Create a FiveM server
+    Installing vRP
+
+Installation
+
+    Download and extract the vrp_template to your resources folder.
+    Ensure vrp_template is included in your server configuration.
+
+Documentation and Support
+
+    vRP Documentation
+    vRP Discord
+
+Additional Notes
+
+Need further support? Join our Discord!
