@@ -37,15 +37,18 @@ This repository is a basic boilerplate for getting started with React in NUI, in
 A wrapper for dispatching NUI messages, designed to be used with the `useNuiEvent` React hook.
 
 **Signature**
+
 ```lua
 ---@param action string The action you wish to target
 ---@param data any The data you wish to send along with this action
 SendReactMessage(action, data)
-
+```
 
 # Usage
+
 ```
 SendReactMessage('setVisible', true)
+```
 
 # debugPrint
 
