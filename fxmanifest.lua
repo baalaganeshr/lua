@@ -1,23 +1,27 @@
 fx_version "cerulean"
+lua54 "yes"
+games {"gta5"}
 
-description "Basic React (TypeScript) & Lua Game Scripts Boilerplate"
-author "Project Error"
-version '1.0.0'
-repository 'https://github.com/project-error/fivem-react-boilerplate-lua'
+ui_page "web/build/index.html"
+lua54 "yes"
 
-lua54 'yes'
-
-games {
-  "gta5",
-  "rdr3"
+dependencies {
+  "vrp"
 }
 
-ui_page 'web/build/index.html'
+server_script {
+  "@vrp/lib/utils.lua",
+  "server_vrp.lua"
+}
 
-client_script "client/**/*"
-server_script "server/**/*"
+client_script {
+  "@vrp/lib/utils.lua",
+  "cl_vrp.lua"
+}
 
 files {
-	'web/build/index.html',
-	'web/build/**/*',
+  "client.lua",
+  "cfg/cfg.lua",
+  "web/build/index.html",
+  "web/build/**/*"
 }
