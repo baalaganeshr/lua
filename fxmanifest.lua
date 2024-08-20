@@ -5,22 +5,15 @@ games {"gta5"}
 ui_page "web/build/index.html"
 lua54 "yes"
 
-dependencies {
-  "vrp"
-}
-
 server_script {
-  "@vrp/lib/utils.lua",
-  "server_vrp.lua"
+  "server.lua"
 }
 
 client_script {
-  "@vrp/lib/utils.lua",
-  "cl_vrp.lua"
+  "client.lua"
 }
 
 files {
-  "client.lua",
   "cfg/cfg.lua",
   "web/build/index.html",
   "web/build/**/*"
