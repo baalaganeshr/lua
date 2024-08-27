@@ -30,9 +30,11 @@ export const VisibilityProvider: React.FC<{ children: React.ReactNode }> = ({
     // Only attach listener when we are visible
     if (!visible) return;
 
-    const keyHandler = (e: KeyboardEvent) => {
+    /*const keyHandler = (e: KeyboardEvent) => {
       if (["Backspace", "Escape"].includes(e.code)) {
-        if (!isEnvBrowser()) fetchNui("hideFrame");
+        if (!isEnvBrowser()) {
+          //console.log("closing");
+        } //fetchNui("hideFrame");
         else setVisible(!visible);
       }
     };
@@ -40,6 +42,7 @@ export const VisibilityProvider: React.FC<{ children: React.ReactNode }> = ({
     window.addEventListener("keydown", keyHandler);
 
     return () => window.removeEventListener("keydown", keyHandler);
+    */
   }, [visible]);
 
   return (
@@ -60,5 +63,5 @@ export const VisibilityProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useVisibility = () =>
   useContext<VisibilityProviderValue>(
-    VisibilityCtx as Context<VisibilityProviderValue>,
+    VisibilityCtx as Context<VisibilityProviderValue>
   );

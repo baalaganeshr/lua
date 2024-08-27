@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import "./App.css";
+import React, { useState, useEffect } from "react";
+import "./transition.css";
 import { debugData } from "../utils/debugData";
 import { fetchNui } from "../utils/fetchNui";
-
-// This will set the NUI to visible if we are
-// developing in browser
 debugData([
   {
     action: "setVisible",
@@ -12,54 +9,42 @@ debugData([
   },
 ]);
 
-interface ReturnClientDataCompProps {
-  data: unknown;
-}
-
-const ReturnClientDataComp: React.FC<ReturnClientDataCompProps> = ({
-  data,
-}) => (
-  <>
-    <h5>Returned Data:</h5>
-    <pre>
-      <code>{JSON.stringify(data, null)}</code>
-    </pre>
-  </>
-);
-
-interface ReturnData {
-  x: number;
-  y: number;
-  z: number;
-}
-
 const App: React.FC = () => {
-  const [clientData, setClientData] = useState<ReturnData | null>(null);
+  const [showNUI, setShowNUI] = useState(false);
+  const [Transition, setTransition] = useState("");
 
-  const handleGetClientData = () => {
-    fetchNui<ReturnData>("getClientData")
-      .then((retData) => {
-        console.log("Got return data from client scripts:");
-        console.dir(retData);
-        setClientData(retData);
-      })
-      .catch((e) => {
-        console.error("Setting mock data due to error", e);
-        setClientData({ x: 500, y: 300, z: 200 });
-      });
-  };
+  useEffect(() => {
+    if (showNUI) {
+      setTransition("fade-swipe-enter");
+      setTimeout(() => {
+        setTransition("fade-swipe-enter fade-swipe-enter-active");
+      }, 10); // Small delay to ensure the transition is applied
+      document.body.style.overflowY = "hidden"; // Hide vertical scrollbar
+      document.body.style.overflowX = "hidden"; // Hide horizontal scrollbar
+    } else {
+      setTransition("fade-swipe-exit");
+      setTimeout(() => {
+        setTransition("");
+        document.body.style.overflowY = "auto"; // Restore vertical scrollbar
+        document.body.style.overflowX = "auto"; // Restore horizontal scrollbar
+      }, 500); // Duration of the exit transition
+    }
+  }, [showNUI]);
 
   return (
-    <div className="nui-wrapper">
-      <div className="popup-thing">
-        <div>
-          <h1>This is the NUI Popup!</h1>
-          <p>Exit with the escape key</p>
-          <button onClick={handleGetClientData}>Get Client Data</button>
-          {clientData && <ReturnClientDataComp data={clientData} />}
+    <>
+      <div className={`flex ${Transition}`}>
+        <div className="absolute left-[40%] top-[42%] w-[20%] h-[20%]">
+          <div className="bg-blue-500 text-center text-2xl">
+            <h1>Test</h1>
+            <button onClick={() => setShowNUI(!showNUI)}>Close</button>
+          </div>
+          <div className="relative bg-gray-500 rounded-lg w-[100%]">
+            <p>NUI content goes here</p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
