@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { debugData, fetchNui, useNuiEvent } from "../utils/utils";
+import { debugData, fetchNui } from "../utils/utils";
 debugData([{ action: "setVisible", data: true }]);
 
 const App: React.FC = () => {
