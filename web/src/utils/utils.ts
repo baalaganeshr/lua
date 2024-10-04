@@ -9,18 +9,6 @@ interface NuiMessageData<T = unknown> {
 
 type NuiHandlerSignature<T> = (data: T) => void;
 
-/**
- * A hook that manage events listeners for receiving data from the client scripts
- * @param action The specific `action` that should be listened for.
- * @param handler The callback function that will handle data relayed by this hook
- *
- * @example
- * useNuiEvent<{visibility: true, wasVisible: 'something'}>('setVisible', (data) => {
- *   // whatever logic you want
- * })
- *
- **/
-
 export const useNuiEvent = <T = unknown>(
 	action: string,
 	handler: (data: T) => void
@@ -53,18 +41,6 @@ export const useNuiEvent = <T = unknown>(
 
 // fetch nui
 import { isEnvBrowser } from "./misc";
-
-/**
- * Simple wrapper around fetch API tailored for CEF/NUI use. This abstraction
- * can be extended to include AbortController if needed or if the response isn't
- * JSON. Tailor it to your needs.
- *
- * @param eventName - The endpoint eventname to target
- * @param data - Data you wish to send in the NUI Callback
- * @param mockData - Mock data to be returned if in the browser
- *
- * @return returnData - A promise for the data sent back by the NuiCallbacks CB argument
- */
 
 export async function fetchNui<T = unknown>(
 	eventName: string,
@@ -101,13 +77,6 @@ interface DebugEvent<T = unknown> {
 	data: T;
 }
 
-/**
- * Emulates dispatching an event using SendNuiMessage in the lua scripts.
- * This is used when developing in browser
- *
- * @param events - The event you want to cover
- * @param timer - How long until it should trigger (ms)
- */
 export const debugData = <P>(events: DebugEvent<P>[], timer = 1000): void => {
 	if (import.meta.env.MODE === "development" && isEnvBrowser()) {
 		for (const event of events) {
