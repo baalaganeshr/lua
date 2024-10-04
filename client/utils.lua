@@ -4,12 +4,7 @@
 ---@param action string The action you wish to target
 ---@param data any The data you wish to send along with this action
 function SendReactMessage(action, data)
-  SendNUIMessage(
-    {
-      action = action,
-      data = data
-    }
-  )
+  SendNUIMessage({action = action, data = data})
 end
 
 function toggleNuiFrame(shouldShow)
@@ -17,19 +12,14 @@ function toggleNuiFrame(shouldShow)
   SendReactMessage("setVisible", shouldShow)
 end
 
-RegisterCommand(
-  "show-nui",
-  function()
-    toggleNuiFrame(true)
-    debugPrint("Show NUI frame")
-  end
-)
+RegisterNUICallback("hideFrame", function(_, cb)
+  toggleNuiFrame(false)
+  debugPrint("Hide NUI frame")
+  cb({})
+end)
 
-RegisterNUICallback(
-  "hideFrame",
-  function(_, cb)
-    toggleNuiFrame(false)
-    debugPrint("Hide NUI frame")
-    cb({})
+function debugPrint(message)
+  if cfg.DebugMode then
+    print('^2[DEBUG]: '..message)
   end
-)
+end

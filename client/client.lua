@@ -4,6 +4,22 @@
 print("Server Name: " .. cfg.ServerName)
 print("Max Players: " .. cfg.MaxPlayers)
 
--- server/server.lua
-print("Starting Money: " .. cfg.StartingMoney)
-print("PvP Enabled: " .. tostring(cfg.EnablePvP))
+-- Example code to send config to UI
+
+RegisterCommand("serverinfo", function()
+  toggleNuiFrame(true)
+  debugPrint("Showing NUI frame")
+end)
+
+
+RegisterNUICallback("getServerInfo", function(_, cb)
+  local pvp = "disabled"
+  if cfg.EnablePvP then pvp = "enabled" end
+  local isPvp = pvp
+  debugPrint("Sending server info to UI")
+  cb({
+    serverName = cfg.ServerName,
+    StartingMoney = cfg.StartingMoney,
+    EnablePvP = isPvp
+  })
+end)
