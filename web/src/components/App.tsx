@@ -43,7 +43,6 @@ const App: React.FC = () => {
 						src={imageUrl}
 						alt="Image from URL will be displayed here."
 						className="w-[25%] h-[25%] border-0 absolute left-[38%] top-[40%] cursor-default"
-						onClick={(event) => event.stopPropagation()}
 					/>
 				<div>
 					<input
