@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { debugData, fetchNui } from "../../utils/utils";
 debugData([{ action: "setVisible", data: true }]);
 
+/**
+ 	This is the Home Page page.
+ This is the first screen players see when they open the UI.
+*/
 const HomePage: React.FC = () => {
 	const [servername, setServerName] = useState<string>("Test Server");
 	const [startingMoney, setStartingMoney] = useState<number>(1000);

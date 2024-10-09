@@ -1,10 +1,18 @@
 import { useState } from "react";
 
+/*
+	This is the Images page.
+	Anything changed in here, will be reflected in the game / browser.
+*/
 const Images = () => {
+	/* This is  the default URL for the image input.
+		This will be displayed when the page is first loaded.
+	*/
 	const [imageUrl, setImageUrl] = useState(
 		"https://r2.fivemanage.com/pub/earoojlnb06p.png"
 	);
 
+	// This changes the url to the one that is inputted.
 	const handleInputChange = (event: any) => {
 		setImageUrl(event.target.value);
 	};
