@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { debugData, fetchNui } from "../../utils/utils";
 debugData([{ action: "setVisible", data: true }]);
 
-/**
- 	This is the Home Page page.
- This is the first screen players see when they open the UI.
-*/
+/**This is the Home Page page.
+ This is the first screen players see when they open the UI.*/
 const HomePage: React.FC = () => {
 	const [servername, setServerName] = useState<string>("Test Server");
 	const [startingMoney, setStartingMoney] = useState<number>(1000);
 	const [pvp, setPvp] = useState<string>("disabled");
 
+	/*This fetches the server info from the server when the page is loaded.
+		This happens only once due to the useEffect hook.	*/
 	useEffect(() => {
 		fetchNui("getServerInfo").then((data: any) => {
 			setServerName(data.serverName);
@@ -34,14 +34,6 @@ const HomePage: React.FC = () => {
 				<p>Your Starting money is ${startingMoney}</p>
 				<p>PVP is currently {pvp}</p>
 			</div>
-
-			{/* Close UI Button */}
-			<button
-				className="select-none absolute bottom-2 left-[43.99%] bg-blue-500 text-white px-10 p-2 rounded-md"
-				onClick={() => fetchNui("hideFrame")}
-			>
-				Close
-			</button>
 		</>
 	);
 };

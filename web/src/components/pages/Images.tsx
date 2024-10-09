@@ -27,7 +27,7 @@ const Images = () => {
 			<img
 				src={imageUrl}
 				alt="Image from URL will be displayed here."
-				className="w-auto h-[70%] absolute left-[30%] top-14"
+				className="w-auto h-[70%] absolute left-[33.4%] top-14"
 			/>
 			<div>
 				<input
@@ -35,7 +35,7 @@ const Images = () => {
 					value={imageUrl}
 					onChange={handleInputChange}
 					placeholder="Enter image URL"
-					className="absolute left-[27%] bottom-[10%] border-[2px] border-black text-left w-[42%] h-[5%] p-3"
+					className="absolute left-[29%] bottom-[10%] border-[2px] border-black text-left w-[42%] h-[5%] p-3"
 				/>
 			</div>
 		</>
