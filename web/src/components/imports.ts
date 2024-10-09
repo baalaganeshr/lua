@@ -8,4 +8,13 @@ import {
 import HomePage from "./pages/HomePage";
 import Images from "./pages/Images";
 
-export { Router, Routes, Route, useNavigate, HomePage, Images };
+export {
+	// Dependencies for use Pages in React.
+	Router,
+	Routes,
+	Route,
+	useNavigate,
+	// Components for each of the pages.
+	HomePage,
+	Images,
+};
