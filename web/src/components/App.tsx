@@ -1,6 +1,5 @@
 // App.tsx
 import {
-	React,
 	Router,
 	Routes,
 	Route,
@@ -12,9 +11,19 @@ const NavigationButtons: React.FC = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div>
-			<button onClick={() => navigate("/")}>Home</button>
-			<button onClick={() => navigate("/images")}>Images</button>
+		<div className="absolute left-2 top-4 flex flex-col space-y-4">
+			<button
+				className="bg-blue-500 text-white hover:bg-blue-700 p-2 rounded-lg"
+				onClick={() => navigate("/")}
+			>
+				Home
+			</button>
+			<button
+				className="bg-blue-500 text-white hover:bg-blue-700 p-2 rounded-lg"
+				onClick={() => navigate("/images")}
+			>
+				Images
+			</button>
 		</div>
 	);
 };

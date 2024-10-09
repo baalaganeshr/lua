@@ -10,10 +10,16 @@ const Images = () => {
 	};
 	return (
 		<>
+			<div className="absolute top-2 left-[27.1%] font-bold">
+				<h1 className="text-center">
+					Use the below input to paste a link to an image.
+				</h1>
+				<h2>The link can be anything, as long as it returns an image.</h2>
+			</div>
 			<img
 				src={imageUrl}
 				alt="Image from URL will be displayed here."
-				className="w-[25%] h-[25%] border-0 absolute left-[38%] top-[40%] cursor-default"
+				className="w-auto h-[70%] absolute left-[30%] top-14"
 			/>
 			<div>
 				<input
@@ -21,7 +27,7 @@ const Images = () => {
 					value={imageUrl}
 					onChange={handleInputChange}
 					placeholder="Enter image URL"
-					className="absolute left-[35%] top-[70%] w-[30%] h-[5%] border-[2px] border-black"
+					className="absolute left-[27%] bottom-[10%] border-[2px] border-black text-left w-[42%] h-[5%] p-3"
 				/>
 			</div>
 		</>
