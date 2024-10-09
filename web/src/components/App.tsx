@@ -51,7 +51,7 @@ const App: React.FC = () => {
 				</Routes>
 				{/* Close UI Button */}
 				<button
-					className="select-none absolute bottom-1 left-[43.99%] bg-blue-500 text-white px-10 p-2 rounded-md"
+					className="select-none absolute bottom-3 left-[43.99%] bg-blue-500 text-white px-10 p-2 rounded-md"
 					onClick={() => fetchNui("hideFrame")}
 				>
 					Close

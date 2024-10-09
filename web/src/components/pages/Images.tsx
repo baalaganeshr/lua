@@ -35,7 +35,7 @@ const Images = () => {
 					value={imageUrl}
 					onChange={handleInputChange}
 					placeholder="Enter image URL"
-					className="absolute left-[29%] bottom-[10%] border-[2px] border-black text-left w-[42%] h-[5%] p-3"
+					className="absolute left-[29%] bottom-[13%] w-[42%] h-[5%] border-[2px] border-black text-left p-3"
 				/>
 			</div>
 		</>
