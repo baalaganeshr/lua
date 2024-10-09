@@ -1,5 +1,4 @@
 // imports.ts
-import React from "react";
 import {
 	BrowserRouter as Router,
 	Routes,
@@ -9,4 +8,4 @@ import {
 import HomePage from "./pages/HomePage";
 import Images from "./pages/Images";
 
-export { React, Router, Routes, Route, useNavigate, HomePage, Images };
+export { Router, Routes, Route, useNavigate, HomePage, Images };
