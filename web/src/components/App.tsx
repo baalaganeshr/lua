@@ -26,7 +26,7 @@ const NavigationButtons: React.FC = () => {
 
 	return (
 		<div className="absolute left-2 top-4 flex flex-col space-y-4">
-			<button className={getButtonClass("/")} onClick={() => navigate("/home")}>
+			<button className={getButtonClass("/")} onClick={() => navigate("/")}>
 				Home
 			</button>
 			<button
@@ -46,7 +46,7 @@ const App: React.FC = () => {
 			<div className="absolute left-[26%] top-[23%] w-[52%] h-[52%] bg-gray-500 border-[2px] border-black">
 				<NavigationButtons />
 				<Routes>
-					<Route path="/home" element={<HomePage />} />
+					<Route path="/" element={<HomePage />} />
 					<Route path="/images" element={<Images />} />
 				</Routes>
 				{/* Close UI Button */}
