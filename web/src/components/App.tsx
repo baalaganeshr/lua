@@ -1,4 +1,5 @@
 // App.tsx
+import { useEffect, useState } from "react";
 import { fetchNui } from "../utils/utils";
 import {
 	Router,
@@ -15,6 +16,8 @@ Found in the imports.ts file.*/
 const NavigationButtons: React.FC = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const [activePath, setActivePath] = useState(location.pathname);
+	const [initialNavigationDone, setInitialNavigationDone] = useState(false);
 
 	/* This function changes the button's background color based on the current path.
 	This is used to indicate what page the user is viewing.*/
@@ -24,14 +27,27 @@ const NavigationButtons: React.FC = () => {
 			: "bg-blue-500 text-white hover:bg-blue-700 p-2 rounded-lg";
 	};
 
+	const handleClick = (path: string) => {
+		setActivePath(path);
+		navigate(path);
+	};
+
+	useEffect(() => {
+		if (!initialNavigationDone) {
+			navigate("/");
+			setActivePath("/");
+			setInitialNavigationDone(true);
+		}
+	}, [navigate, initialNavigationDone]);
+
 	return (
 		<div className="absolute left-2 top-4 flex flex-col space-y-4">
-			<button className={getButtonClass("/")} onClick={() => navigate("/")}>
+			<button className={getButtonClass("/")} onClick={() => handleClick("/")}>
 				Home
 			</button>
 			<button
 				className={getButtonClass("/images")}
-				onClick={() => navigate("/images")}
+				onClick={() => handleClick("/images")}
 			>
 				Images
 			</button>
