@@ -7,19 +7,9 @@ function SendReactMessage(action, data)
   SendNUIMessage({action = action, data = data})
 end
 
-function toggleNuiFrame(shouldShow)
-  SetNuiFocus(shouldShow, shouldShow)
-  SendReactMessage("setVisible", shouldShow)
-end
-
-RegisterNUICallback("hideFrame", function(_, cb)
+RegisterNUICallback("close", function(_, cb)
   toggleNuiFrame(false)
   debugPrint("Hide NUI frame")
   cb({})
 end)
 
-function debugPrint(message)
-  if cfg.DebugMode then
-    print('^2[DEBUG]: '..message)
-  end
-end

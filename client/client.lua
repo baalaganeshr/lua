@@ -1,25 +1,5 @@
--- toggleNuiFrame(shouldShow)
--- SendReactMessage(action, data)
--- client/client.lua
-print("Server Name: " .. cfg.ServerName)
-print("Max Players: " .. cfg.MaxPlayers)
-
--- Example code to send config to UI
-
-RegisterCommand("serverinfo", function()
-  toggleNuiFrame(true)
-  debugPrint("Showing NUI frame")
-end)
-
-
-RegisterNUICallback("getServerInfo", function(_, cb)
-  local pvp = "disabled"
-  if cfg.EnablePvP then pvp = "enabled" end
-  local isPvp = pvp
-  debugPrint("Sending server info to UI")
-  cb({
-    serverName = cfg.ServerName,
-    StartingMoney = cfg.StartingMoney,
-    EnablePvP = isPvp
-  })
+RegisterCommand("ui", function()
+  SetNuiFocus(true, true) -- allows mouse and keyboard input in the UI
+  local randomNumber = math.random(1,99)
+  SendReactMessage('openBox', {randomNumber})
 end)
