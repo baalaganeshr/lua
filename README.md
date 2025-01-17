@@ -1,10 +1,9 @@
 # Info.
-This is a boilerplate for fivem to utilize lua and react together.
+This is a boilerplate for fivem to utilize lua and react together. This boilerplate in particular uses SCSS, which is a little different than regular css, but the main thing to know is that it works great with React.
 
 # Dependencies
-In order to use this template, you need to ensure you have both a cfx default server, and vrp framework installed. 
-Reference the below videos for the dependencies:
-* Create a fivem server - https://youtu.be/uSLSiBYZBQY?si=M4VeoNQb7_v2uFaG
+In order to use this template, you need to ensure you have a cfx default server installed. 
+* A fivem server: https://youtu.be/uSLSiBYZBQY?si=M4VeoNQb7_v2uFaG
 * Basic knowledge of React and NodeJS or yarn usage.
 
 # Installation
@@ -13,24 +12,7 @@ Reference the below videos for the dependencies:
 * Rename the file to whatever you want, and begin coding.
 * Don't forget to add the name of your folder to your server.cfg file, and restart your server.
 
-# Usage for UI
-## Hot Builds In-Game
-Use start:game for hot builds that require only a resource restart.
-
-## With Yarn
-
-yarn start:game
-
-## With NPM
-
-npm run start:game
-
-## Production Builds
-
-Create optimized production builds with:
-
-## With Yarn
-yarn build
-
-## With NPM
-npm run build
+# Console commands required for UI:
+* npm run build - Typing this into your VSCode console will make the react files compile into html, js, and css code, for FiveM to use as a UI.
+* npm run watch - Typing this into your VSCode console will automatically build your files when you save. This is useful if you don't want to constantly type `npm run build` after every save.
+* npm run dev - Typing this into your VSCode console will allow you to view your UI in your web browser. This is useful to avoid constantly restarting your script for little changes in the UI, such as moving a button 10 pixels.
