@@ -3,7 +3,7 @@ import { useState } from "react";
 import '@components/box.scss'
 
 export const Box: React.FC = () => {
-  const [visible, setVisible] = useState<boolean>(false); // change to true to see the UI.
+  const [visible, setVisible] = useState<boolean>(true); // change to true to see the UI.
 
   // useNuiEvent from @utilities/utils.ts to await NUI Messages easily.
   useNuiEvent('openBox', (data: any) => {
