@@ -1,12 +1,11 @@
-// Add exported components here from components folder.
+import { Box } from "@components/Box";
 
-import { Box } from "@components/Box"; // Box.
 const App = () => {
-  return (
-    <>
-      <Box />
-    </>
-  );
+	return (
+		<>
+			<Box />
+		</>
+	);
 };
 
 export default App;

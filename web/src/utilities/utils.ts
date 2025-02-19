@@ -1,71 +1,60 @@
-// use nui event
-import { MutableRefObject, useEffect, useRef } from "react";
-import { noop } from "./misc";
+import { useEffect } from "react";
 
-interface NuiMessageData<T = unknown> {
-  action: string;
-  data: T;
-}
+type NuiEvent<T = any> = {
+	type: string;
+} & T;
 
-type NuiHandlerSignature<T> = (data: T) => void;
-
-export const useNuiEvent = <T = unknown>(
-  action: string,
-  handler: (data: T) => void
+/**
+ * useNuiEvent - Listens for a NUI message and triggers a callback
+ * @param eventName - The event name to listen for
+ * @param callback - The function to call when the event is received
+ */
+export const useNuiEvent = <T = any>(
+	eventName: string,
+	callback: (data: T) => void
 ) => {
-  const savedHandler: MutableRefObject<NuiHandlerSignature<T>> = useRef(noop);
+	useEffect(() => {
+		const handleMessage = (event: MessageEvent<NuiEvent<T>>) => {
+			if (event.data?.type === eventName) {
+				// Directly pass the full data object
+				callback(event.data);
+			}
+		};
 
-  // Make sure we handle for a reactive handler
-  useEffect(() => {
-    savedHandler.current = handler;
-  }, [handler]);
-
-  useEffect(() => {
-    const eventListener = (event: MessageEvent<NuiMessageData<T>>) => {
-      const { action: eventAction, data } = event.data;
-
-      if (savedHandler.current) {
-        if (eventAction === action) {
-          savedHandler.current(data);
-        }
-      }
-    };
-
-    window.addEventListener("message", eventListener);
-    // Remove Event Listener on component cleanup
-    return () => window.removeEventListener("message", eventListener);
-  }, [action]);
+		window.addEventListener("message", handleMessage);
+		return () => {
+			window.removeEventListener("message", handleMessage);
+		};
+	}, [eventName, callback]);
 };
+
+
 
 //end nui event
 
 // fetch nui
-import { isEnvBrowser } from "./misc";
-
 export async function fetchNui<T = unknown>(
-  eventName: string,
-  data?: unknown,
-  mockData?: T
+	eventName: string,
+	data?: unknown,
+	mockData?: T
 ): Promise<T> {
-  const options = {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json; charset=UTF-8",
-    },
-    body: JSON.stringify(data),
-  };
+	const options = {
+		method: "post",
+		headers: {
+			"Content-Type": "application/json; charset=UTF-8",
+		},
+		body: JSON.stringify(data),
+	};
 
-  if (isEnvBrowser() && mockData) return mockData;
+	const resourceName = (window as any).GetParentResourceName
+		? (window as any).GetParentResourceName()
+		: "nui-frame-app";
 
-  const resourceName = (window as any).GetParentResourceName
-    ? (window as any).GetParentResourceName()
-    : "nui-frame-app";
+	const resp = await fetch(`https://${resourceName}/${eventName}`, options);
 
-  const resp = await fetch(`https://${resourceName}/${eventName}`, options);
+	const respFormatted = await resp.json();
 
-  const respFormatted = await resp.json();
-
-  return respFormatted;
+	return respFormatted;
 }
 
 //  end fetch nui

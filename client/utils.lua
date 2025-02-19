@@ -4,12 +4,14 @@
 ---@param action string The action you wish to target
 ---@param data any The data you wish to send along with this action
 function SendReactMessage(action, data)
-  SendNUIMessage({action = action, data = data})
+  SendNUIMessage({
+		type = action, 
+		data = data
+	})
 end
 
-RegisterNUICallback("close", function(_, cb)
-  toggleNuiFrame(false)
-  debugPrint("Hide NUI frame")
+RegisterNUICallback("closeBox", function(_, cb)
+ 	SetNuiFocus(false, false)
   cb({})
 end)
 
