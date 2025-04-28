@@ -6,11 +6,11 @@
 function SendReactMessage(action, data)
   SendNUIMessage({
 		type = action, 
-		data = data
+		data
 	})
 end
 
-RegisterNUICallback("closeBox", function(_, cb)
+RegisterNUICallback("close", function(_, cb)
  	SetNuiFocus(false, false)
   cb({})
 end)
