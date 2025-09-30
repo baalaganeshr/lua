@@ -1,53 +1,182 @@
 import { fetchNui, useNuiEvent } from "@utilities/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useVisibility } from "@utilities/visibilityProvider";
+import { isEnvBrowser } from "@utilities/misc";
 import '@components/box.scss'
 
-export const Box: React.FC = () => {
-	const [visible, setVisible] = useState<boolean>(false); // change to true to see the UI.
+interface ServerData {
+  ServerName: string;
+  MaxPlayers: number;
+  StartingMoney: number;
+  isPvpEnabled: boolean;
+}
 
-	const [ServerName, setServerName] = useState<string>("")
-	const [MaxPlayers, setMaxPlayers] = useState<number>(15)
-	const [StartingMoney, setStartingMoney] = useState<number>(1000)
-	const [isPvpEnabled, setIsPvpEnabled] = useState<string>('False')
+export const Box: React.FC = () => {
+	const { visible, setVisible } = useVisibility();
+	const [isClosing, setIsClosing] = useState<boolean>(false);
+
+	// Initialize with default data for browser testing
+	const [serverData, setServerData] = useState<ServerData>({
+		ServerName: isEnvBrowser() ? "Demo Server" : "Loading...",
+		MaxPlayers: isEnvBrowser() ? 32 : 0,
+		StartingMoney: isEnvBrowser() ? 5000 : 0,
+		isPvpEnabled: isEnvBrowser() ? true : false
+	});
 
 	// useNuiEvent from @utilities/utils.ts to await NUI Messages easily.
-	useNuiEvent('configData', (data: any) => {
-		setServerName(data.ServerName)
-		setMaxPlayers(data.MaxPlayers)
-		setStartingMoney(data.StartingMoney)
+	useNuiEvent('configData', (data: ServerData) => {
+		console.log('Received config data:', data);
+		setServerData({
+			ServerName: data.ServerName || "Unknown Server",
+			MaxPlayers: data.MaxPlayers || 32,
+			StartingMoney: data.StartingMoney || 1000,
+			isPvpEnabled: data.isPvpEnabled || false
+		});
+		setVisible(true);
+	});
 
-		if (data.isPvpEnabled) {
-			setIsPvpEnabled("True")
-		} else {
-			setIsPvpEnabled("False")
+	// Show UI automatically in browser for testing
+	useEffect(() => {
+		if (isEnvBrowser()) {
+			setVisible(true);
+			console.log('Browser environment detected, showing UI for testing');
 		}
-		setVisible(true) // this sets the UI to visible.
-	})
+	}, [setVisible]);
 
+	const handleClose = async () => {
+		setIsClosing(true);
+		console.log('Attempting to close UI');
+		
+		try {
+			if (!isEnvBrowser()) {
+				// Only send NUI message in FiveM environment
+				await fetchNui('closeBox');
+				console.log('Close message sent to client');
+			} else {
+				console.log('Browser environment - simulating close');
+			}
+			
+			// Add animation delay for smooth transition
+			setTimeout(() => {
+				setVisible(false);
+				setIsClosing(false);
+				console.log('UI closed successfully');
+			}, 300);
+		} catch (error) {
+			console.error('Failed to close box:', error);
+			// Still close the UI even if NUI call fails
+			setTimeout(() => {
+				setVisible(false);
+				setIsClosing(false);
+			}, 300);
+		}
+	};
 
-	const CloseUI = () => {
-		fetchNui('closeBox')
-			// using .then when callback from client is true.
-			.then(() => {
-				setVisible(false)
-				console.log("box is now closed :)")
-			})
-			// using .catch to log errors if callback from client is not received or false.
-			.catch((e) => { console.log('\'was unable to close the box :(') })
-	}
+	// Handle ESC key to close
+	useEffect(() => {
+		const handleKeyPress = (event: KeyboardEvent) => {
+			if (event.key === 'Escape' && visible && !isClosing) {
+				handleClose();
+			}
+		};
 
+		window.addEventListener('keydown', handleKeyPress);
+		return () => window.removeEventListener('keydown', handleKeyPress);
+	}, [visible, isClosing]);
 
-	if (!visible) return // prevents UI from displaying when visible is false.
+	const formatMoney = (amount: number) => {
+		return new Intl.NumberFormat('en-US', {
+			style: 'currency',
+			currency: 'USD',
+			minimumFractionDigits: 0,
+			maximumFractionDigits: 0
+		}).format(amount);
+	};
+
+	if (!visible) return null;
+
 	return (
-		<div className="container">
-			<div className="box">
-				<h1>Welcome to {ServerName}</h1>
-				<h2>Max Players set to {MaxPlayers}</h2>
-				<h3>Your Starting Money is {StartingMoney}</h3>
-				<h3>PvP is {isPvpEnabled}</h3>
-				<div className="close"
-					onClick={CloseUI}>Close</div>
+		<div className={`server-info-container ${isClosing ? 'closing' : ''}`}>
+			<div className="server-info-box">
+				{/* Header */}
+				<div className="header">
+					<div className="server-icon">
+						<svg viewBox="0 0 24 24" fill="currentColor">
+							<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+						</svg>
+					</div>
+					<h1 className="server-title">Welcome to</h1>
+					<h2 className="server-name">{serverData.ServerName}</h2>
+					<button 
+						className={`close-button ${isClosing ? 'loading' : ''}`}
+						onClick={handleClose}
+						disabled={isClosing}
+						title="Press ESC to close"
+					>
+						{isClosing ? (
+							<div className="spinner"></div>
+						) : (
+							<svg viewBox="0 0 24 24" fill="currentColor">
+								<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+							</svg>
+						)}
+					</button>
+				</div>
+
+				{/* Server Stats */}
+				<div className="stats-grid">
+					<div className="stat-card players">
+						<div className="stat-icon">
+							<svg viewBox="0 0 24 24" fill="currentColor">
+								<path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 7h-.79c-.67 0-1.26.34-1.61.86l-2 2.98C13.75 11.13 13.39 11 13 11H7c-.83 0-1.5.67-1.5 1.5S6.17 14 7 14h5l-1.78 2.67L9 19l1.41 1.41L12.83 18H20zM12.5 11.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5S11 9.17 11 10s.67 1.5 1.5 1.5zM5.5 6c1.11 0 2-.89 2-2s-.89-2-2-2-2 .89-2 2 .89 2 2 2zm1.5 4h-2c-.83 0-1.5.67-1.5 1.5S4.17 13 5 13h1l1.5 6.5L9 19l-1.78-4.5L8.5 12c.28 0 .5-.22.5-.5s-.22-.5-.5-.5z"/>
+							</svg>
+						</div>
+						<div className="stat-info">
+							<span className="stat-label">Max Players</span>
+							<span className="stat-value">{serverData.MaxPlayers}</span>
+						</div>
+					</div>
+
+					<div className="stat-card money">
+						<div className="stat-icon">
+							<svg viewBox="0 0 24 24" fill="currentColor">
+								<path d="M11,8c0,2.21 1.79,4 4,4s4-1.79 4-4-1.79-4-4-4S11,5.79 11,8zM17,18c0-2.21-1.79-4-4-4s-4,1.79-4,4H17z"/>
+								<circle cx="5.5" cy="8" r="2.5"/>
+								<path d="M2,18c0-2.21,1.79-4,4-4c0.58,0,1.12,0.13,1.61,0.35C6.87,15.21,6.5,16.56,6.5,18H2z"/>
+							</svg>
+						</div>
+						<div className="stat-info">
+							<span className="stat-label">Starting Money</span>
+							<span className="stat-value">{formatMoney(serverData.StartingMoney)}</span>
+						</div>
+					</div>
+
+					<div className={`stat-card pvp ${serverData.isPvpEnabled ? 'enabled' : 'disabled'}`}>
+						<div className="stat-icon">
+							<svg viewBox="0 0 24 24" fill="currentColor">
+								{serverData.isPvpEnabled ? (
+									<path d="M6.92,5H5L6.5,6.5C5.88,7.24 5.24,8.08 4.6,9H2V11H4.53C4.35,11.33 4.18,11.66 4,12H2V14H4C4.18,14.34 4.35,14.67 4.53,15H2V17H4.6C5.24,17.92 5.88,18.76 6.5,19.5L5,21H6.92L8.23,19.69C9.73,21.07 11.83,22 14.17,22C16.51,22 18.61,21.07 20.11,19.69L21.42,21H23.34L21.84,19.5C22.46,18.76 23.1,17.92 23.74,17H26.34V15H23.81C23.99,14.67 24.16,14.34 24.34,14H26.34V12H24.34C24.16,11.66 23.99,11.33 23.81,11H26.34V9H23.74C23.1,8.08 22.46,7.24 21.84,6.5L23.34,5H21.42L20.11,6.31C18.61,4.93 16.51,4 14.17,4C11.83,4 9.73,4.93 8.23,6.31L6.92,5M14.17,6C17.84,6 20.77,8.77 21.14,12.3L21.17,13L21.14,13.7C20.77,17.23 17.84,20 14.17,20C10.5,20 7.57,17.23 7.2,13.7L7.17,13L7.2,12.3C7.57,8.77 10.5,6 14.17,6M14.17,8C11.58,8 9.5,10.08 9.5,12.67C9.5,15.26 11.58,17.34 14.17,17.34C16.76,17.34 18.84,15.26 18.84,12.67C18.84,10.08 16.76,8 14.17,8Z"/>
+								) : (
+									<path d="M12,2C13.1,2 14,2.9 14,4C14,5.1 13.1,6 12,6C10.9,6 10,5.1 10,4C10,2.9 10.9,2 12,2M21,9V7L15,1H5C3.89,1 3,1.89 3,3V21A2,2 0 0,0 5,23H19A2,2 0 0,0 21,21V9M19,9H14V3.5L19,9M12,12C13.1,12 14,12.9 14,14C14,15.1 13.1,16 12,16C10.9,16 10,15.1 10,14C10,12.9 10.9,12 12,12Z"/>
+								)}
+							</svg>
+						</div>
+						<div className="stat-info">
+							<span className="stat-label">PvP Mode</span>
+							<span className="stat-value">
+								{serverData.isPvpEnabled ? 'Enabled' : 'Disabled'}
+							</span>
+						</div>
+						<div className={`pvp-indicator ${serverData.isPvpEnabled ? 'enabled' : 'disabled'}`}></div>
+					</div>
+				</div>
+
+				{/* Footer */}
+				<div className="footer">
+					<p className="welcome-text">Enjoy your stay and have fun!</p>
+					<p className="hint-text">Press <kbd>ESC</kbd> to close this window</p>
+				</div>
 			</div>
 		</div>
-	)
+	);
 }

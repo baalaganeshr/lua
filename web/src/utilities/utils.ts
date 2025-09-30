@@ -38,6 +38,17 @@ export async function fetchNui<T = unknown>(
 	data?: unknown,
 	mockData?: T
 ): Promise<T> {
+	// Check if we're in a browser environment
+	if (!(window as any).GetParentResourceName) {
+		console.log(`[DEV] fetchNui called: ${eventName}`, data);
+		// Return mock data for browser testing
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				resolve((mockData || { success: true }) as T);
+			}, 100);
+		});
+	}
+
 	const options = {
 		method: "post",
 		headers: {
@@ -46,15 +57,21 @@ export async function fetchNui<T = unknown>(
 		body: JSON.stringify(data),
 	};
 
-	const resourceName = (window as any).GetParentResourceName
-		? (window as any).GetParentResourceName()
-		: "nui-frame-app";
+	const resourceName = (window as any).GetParentResourceName();
 
-	const resp = await fetch(`https://${resourceName}/${eventName}`, options);
+	try {
+		const resp = await fetch(`https://${resourceName}/${eventName}`, options);
+		
+		if (!resp.ok) {
+			throw new Error(`HTTP error! status: ${resp.status}`);
+		}
 
-	const respFormatted = await resp.json();
-
-	return respFormatted;
+		const respFormatted = await resp.json();
+		return respFormatted;
+	} catch (error) {
+		console.error(`fetchNui error for ${eventName}:`, error);
+		throw error;
+	}
 }
 
 //  end fetch nui

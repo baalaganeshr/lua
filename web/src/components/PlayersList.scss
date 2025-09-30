@@ -1,0 +1,293 @@
+.players-list {
+  padding: 32px;
+  
+  .players-header {
+    margin-bottom: 24px;
+    
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      
+      .players-title {
+        font-size: 24px;
+        font-weight: 700;
+        color: #f1f5f9;
+        margin: 0;
+      }
+      
+      .players-count {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+        padding: 8px 16px;
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 12px;
+        
+        .current {
+          font-size: 20px;
+          font-weight: 700;
+          color: #6366f1;
+        }
+        
+        .separator {
+          font-size: 16px;
+          color: #64748b;
+        }
+        
+        .max {
+          font-size: 16px;
+          font-weight: 500;
+          color: #94a3b8;
+        }
+      }
+    }
+    
+    .header-controls {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      
+      .search-box {
+        position: relative;
+        flex: 1;
+        max-width: 300px;
+        
+        .search-icon {
+          position: absolute;
+          left: 12px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 18px;
+          height: 18px;
+          color: #64748b;
+          pointer-events: none;
+        }
+        
+        input {
+          width: 100%;
+          padding: 12px 12px 12px 40px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          color: #f1f5f9;
+          font-size: 14px;
+          transition: all 0.3s ease;
+          outline: none;
+          
+          &::placeholder {
+            color: #64748b;
+          }
+          
+          &:focus {
+            border-color: #6366f1;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+          }
+        }
+      }
+      
+      .sort-select {
+        select {
+          padding: 12px 16px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          color: #f1f5f9;
+          font-size: 14px;
+          cursor: pointer;
+          outline: none;
+          transition: all 0.3s ease;
+          
+          &:focus {
+            border-color: #6366f1;
+            background: rgba(255, 255, 255, 0.08);
+          }
+          
+          option {
+            background: #1e293b;
+            color: #f1f5f9;
+          }
+        }
+      }
+    }
+  }
+  
+  .players-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  
+  .player-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .player-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      
+      .player-avatar {
+        position: relative;
+        
+        .avatar-circle {
+          width: 48px;
+          height: 48px;
+          border-radius: 12px;
+          background: linear-gradient(135deg, #6366f1, #8b5cf6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 18px;
+          font-weight: 700;
+          color: white;
+        }
+        
+        .status-indicator {
+          position: absolute;
+          bottom: -2px;
+          right: -2px;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          border: 2px solid rgba(0, 0, 0, 0.8);
+        }
+      }
+      
+      .player-info {
+        flex: 1;
+        
+        .player-name {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 16px;
+          font-weight: 600;
+          color: #f1f5f9;
+          margin-bottom: 4px;
+          
+          .vip-badge {
+            width: 16px;
+            height: 16px;
+            color: #fbbf24;
+            filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.3));
+          }
+        }
+        
+        .player-job {
+          font-size: 13px;
+          color: #64748b;
+          font-weight: 500;
+        }
+      }
+    }
+    
+    .player-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      
+      .stat-item {
+        text-align: center;
+        padding: 8px;
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 8px;
+        
+        .stat-label {
+          display: block;
+          font-size: 11px;
+          color: #64748b;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-bottom: 4px;
+          font-weight: 500;
+        }
+        
+        .stat-value {
+          display: block;
+          font-size: 14px;
+          font-weight: 600;
+          color: #f1f5f9;
+          
+          &.ping {
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+  
+  .no-players {
+    text-align: center;
+    padding: 60px 20px;
+    color: #64748b;
+    
+    svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+    
+    h3 {
+      font-size: 18px;
+      color: #94a3b8;
+      margin: 0 0 8px 0;
+    }
+    
+    p {
+      font-size: 14px;
+      margin: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .players-list {
+    padding: 20px;
+    
+    .players-header {
+      .header-top {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+        
+        .players-title {
+          text-align: center;
+        }
+        
+        .players-count {
+          align-self: center;
+        }
+      }
+      
+      .header-controls {
+        flex-direction: column;
+        gap: 12px;
+        
+        .search-box {
+          max-width: none;
+        }
+      }
+    }
+    
+    .players-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

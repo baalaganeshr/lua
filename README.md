@@ -1,13 +1,38 @@
-# Info.
-This is a boilerplate for fivem to utilize lua and react together. This boilerplate in particular uses SCSS, which is a little different than regular css, but the main thing to know is that it works great with React.
+# 🚀 lua-react-boilerplate - FULLY FUNCTIONAL
 
-# Dependencies
-In order to use this template, you need to ensure you have a cfx default server installed. 
-* A fivem server: https://youtu.be/uSLSiBYZBQY?si=M4VeoNQb7_v2uFaG
-* Basic knowledge of React and NodeJS or yarn usage.
+A modern, production-ready FiveM resource with a beautiful React UI for displaying server information.
 
-# Installation
-* Download the repo via releases.
+## ✅ What's New - Completely Overhauled!
+
+### 🎨 **Visual Overhaul**
+- **Modern Glassmorphism UI** with backdrop blur effects
+- **Animated Background** with floating particles  
+- **Smooth Animations** for all interactions
+- **Responsive Design** that works on all screen sizes
+- **Professional Typography** with Google Fonts
+
+### ⚡ **Full Functionality**
+- **Browser Testing Mode** with demo controls
+- **Proper FiveM Integration** with NUI callbacks
+- **Keyboard Shortcuts** (F1 to toggle, ESC to close)
+- **Error Handling** for all operations
+- **Debug Logging** for troubleshooting
+
+## 🎮 Quick Start
+
+### Installation
+1. Copy to your `resources` folder
+2. Add `ensure lua-react-boilerplate` to `server.cfg`  
+3. Restart server
+4. Press **F1** in-game to test!
+
+### Development
+```bash
+cd web
+npm install
+npm run dev    # Browser testing
+npm run build  # Production build
+```
 * Extract to your resources folder.
 * Rename the file to whatever you want, and begin coding.
 * Don't forget to add the name of your folder to your server.cfg file, and restart your server.
